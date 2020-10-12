@@ -19,6 +19,6 @@ from app1 import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.first_func, name='Home Page'),
-    path('second', views.second_func, name='Second Page'),
+    path('', views.Test.first_page, name='Home Page'),
+    path('second', views.Test.second_page, name='Second Page'),
 ]
