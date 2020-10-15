@@ -1,12 +1,14 @@
 <!DOCTYPE html>
+{% load static %}
 <html>
 <head>
     <title>Main Page</title>
+    <link rel = 'stylesheet' href = "{% static "css/first.css" %}">
 </head>
 
 <body>
 
-    <h1>{{ title }}</h1>  
+    <h1 class='title'>{{ title }}</h1>  
     <h1>{{ name }}</h2>
 
     <h2>Main Page from template</h2>
@@ -14,12 +16,38 @@
     <p>{{address.sub_address}}</p>
     
     <ul>
-        <li>{{language.0}}</li>
-        <li>{{language.1}}</li>
-        <li>{{language.2}}</li>
+        {% for language in languages %}
+        <li>{{language}}</li>
+        {% endfor %}
     </ul>
 
     <a href = "/second">Second Page</a>
+    
+    <form action = "save_model" method = "POST">
+        {% csrf_token %} 
+        <table>
+            {{form}}
+        </table>
+        <button>save</button>
+    </form>
+
+    <ol>
+   
+        {% for car in cars %}
+        <li>{{car.color}}, {{car.speed}}, {{car.model}}
+            <ul>
+                {% for tag in car.tags %}
+                <li>{{tag}}</li>
+                {% endfor %}
+            </ul>
+            <a href='delete_model?pk={{car.pk}}'>DELETE</a>
+            <a href='edit_model?pk={{car.pk}}'>EDIT</a>
+        </li>
+        {% endfor %}
+    </ol>
+
+    <img src='https://content-16.foto.my.mail.ru/community/literatura.2012/_groupsphoto/h-914.jpg' width='200'>
+    <img src="{% static "images/flower.jpg" %}" width='200'>
 </body>
 
 </html>
