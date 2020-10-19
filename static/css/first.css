@@ -1,0 +1,14 @@
+.title {
+    background-color: darkcyan;
+}
+
+.box {
+    width: 200px;
+    height: 200px;
+    background-color: aqua;
+    border-radius: 20px;
+}
+
+body {
+    background-image: url('/static/images/flower.jpg');
+}

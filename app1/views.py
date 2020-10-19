@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.http.response import HttpResponse
 from app1 import models
 from app1 import forms
+import requests
 # Create your views here.
 class Test:
 
@@ -11,8 +12,6 @@ class Test:
         # models.MyModel.objects.filter(color = 123, speed = 123) SELECT * FROM table_name WHERE color = '123' AND speed = '123'
 
         cars = models.MyModel.objects.all()
-
-        print(dir(models.MyModel.objects.filter()))
 
         for car in cars:
             car.tags = car.tags.split(',')
@@ -43,3 +42,26 @@ class Test:
             tags = self.POST.get('tags')
             models.MyModel(color=color, speed=speed, model=model, tags=tags).save()
             return redirect('/')
+
+
+
+def myparser(request, inst_account):
+    instagram_account = requests.get('https://www.instagram.com/'+inst_account+'/?__a=1').json()
+    description = instagram_account['graphql']['user']['biography']
+    account = instagram_account['graphql']['user']['username']
+    followers = instagram_account['graphql']['user']['edge_followed_by']['count']
+    following = instagram_account['graphql']['user']['edge_follow']['count']
+    posts = instagram_account['graphql']['user']['edge_owner_to_timeline_media']['count']
+
+    output = "<h1>"+account+"</h1> <p>"+description+"</p> <ul><li> Followers: "+str(followers)+"</li><li> Following: "+str(following)+"</li><li> Posts: "+str(posts)+"</li></ul>"
+    
+    models.Account(account_username=account, account_description=description, account_followers=followers, account_following=following, account_posts=posts).save()
+    
+    return output
+
+
+def enter_account(request):
+    if request.method == 'POST':
+        account = request.POST.get('account')
+        out = myparser(request, account)
+        return HttpResponse(out)
