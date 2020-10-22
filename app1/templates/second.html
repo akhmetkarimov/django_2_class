@@ -7,6 +7,15 @@
 <body>
     <h2>Second Page from template</h2>
     <a href = "/">Main Page</a>
+    <form action = "/update_model" method = "POST">
+        {% csrf_token %} 
+        <input type ="text" value = '{{car.color}}' name = "color">
+        <input type ="number" value = '{{car.speed}}' name = "speed">
+        <input type ="text" value = '{{car.model}}' name = "model">
+        <input type ="text" value = '{{car.tags}}' name = "tags">
+        <input type ="hidden" value = '{{car.id}}' name = "pk">
+        <button>edit</button>  
+    </form>
 </body>
 
 </html>

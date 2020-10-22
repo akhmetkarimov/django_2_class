@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+<head>
+    <title>Movie</title>
+</head>
+
+<body>
+
+    <ol>
+        {% for movie in movies %}
+            <li>{{movie.movie_title}}<li>
+            <ul>
+                {% for genre in movie.genres.all %}
+                    <li>{{genre}}</li>
+                {% endfor %}
+            </ul>
+        {% endfor %}
+    </ol>
+
+
+</body>
+
+</html>

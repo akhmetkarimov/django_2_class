@@ -14,7 +14,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 from app1 import views
 from django.conf.urls.static import static
 from django.conf import settings
@@ -22,9 +22,6 @@ from django.views.decorators.csrf import csrf_exempt
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.Test.first_page, name='Home Page'),
-    path('second', views.Test.second_page, name='Second Page'),
-    path('save_model', views.Test.save_my_model, name='Save Model'),
-    path('parser', views.myparser, name='Parser Page'),
-    path('parser_account', csrf_exempt(views.enter_account), name='Parser Page'),
+    path('', include('app1.urls')),
+
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

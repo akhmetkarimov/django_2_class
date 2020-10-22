@@ -10,6 +10,8 @@ class Test:
 
         # models.MyModel.objects.all() SELECT * FROM tabel_name
         # models.MyModel.objects.filter(color = 123, speed = 123) SELECT * FROM table_name WHERE color = '123' AND speed = '123'
+        # models.MyModel.objects.select_related('car_type') INNER JOIN
+        # 
 
         cars = models.MyModel.objects.all()
 
@@ -43,6 +45,38 @@ class Test:
             models.MyModel(color=color, speed=speed, model=model, tags=tags).save()
             return redirect('/')
 
+    def update_my_model(self):
+        if self.method == 'POST':
+            pk = self.POST.get('pk')
+            color = self.POST.get('color')
+            speed = self.POST.get('speed')
+            model = self.POST.get('model')
+            tags = self.POST.get('tags')
+
+            # models.MyModel.objects.filter(pk=pk).update(color=color, speed=speed, model=model, tags=tags)
+
+            car = models.MyModel.objects.get(pk=pk)
+            car.color = color
+            car.speed = speed
+            car.model = model
+            car.tags = tags
+
+            car.save()
+
+            return redirect('/')
+
+    def delete_my_model(self, pk):
+        models.MyModel.objects.get(pk=pk).delete()
+        return redirect('/')
+
+    def edit_my_model(self, pk):
+        car = models.MyModel.objects.get(pk=pk)
+        
+        data = {
+            "car": car
+        }
+
+        return render(self, 'second.html', data)
 
 
 def myparser(request, inst_account):
@@ -65,3 +99,14 @@ def enter_account(request):
         account = request.POST.get('account')
         out = myparser(request, account)
         return HttpResponse(out)
+
+def getMovies(request):
+    movies = models.Movie.objects.prefetch_related('genres')
+
+    models.Movie.objects.get()
+
+    data = {
+        "movies": movies,
+    }
+
+    return render(request,'movies.html', data)
